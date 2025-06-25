@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice Authenticity Validator</title>
+</head>
+<body>
+    <h1>Upload Invoice</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="invoice" required>
+        <button type="submit">Check Invoice</button>
+    </form>
+
+    {% if result %}
+        <h2>Result:</h2>
+        <p>{{ result }}</p>
+
+        {% if image %}
+        <h3>Original Invoice:</h3>
+        <img src="{{ image }}" width="400">
+        {% endif %}
+
+        {% if ela_image %}
+        <h3>ELA Analysis Image:</h3>
+        <img src="{{ ela_image }}" width="400">
+        {% endif %}
+    {% endif %}
+</body>
+</html>
