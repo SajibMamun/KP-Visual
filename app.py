@@ -7,8 +7,13 @@ app = Flask(__name__)
 
 # ---------- Configuration ----------
 UPLOAD_FOLDER = 'static/uploads'
+ALLOWED_EXTENSIONS = {'pdf', 'jpg', 'jpeg', 'png'}
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# ---------- Allowed File Types ----------
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # ---------- Upload Folder Cleaner ----------
 def clear_upload_folder():
@@ -30,7 +35,7 @@ def index():
 
     if request.method == 'POST':
         file = request.files.get('invoice')
-        if file and file.filename != '':
+        if file and allowed_file(file.filename):
             clear_upload_folder()  # 🧹 Clean before saving new
 
             filename = secure_filename(file.filename)
@@ -44,6 +49,8 @@ def index():
                 image_path = image_path.replace("\\", "/")
             if ela_image:
                 ela_image = ela_image.replace("\\", "/")
+        else:
+            result = "🚫 Unsupported file format. Please upload a PDF or image."
 
     return render_template('index.html', result=result, image=image_path, ela_image=ela_image)
 
@@ -57,7 +64,10 @@ def check_invoice_api():
     if file.filename == '':
         return jsonify({"error": "Empty filename"}), 400
 
-    clear_upload_folder()  # 🧹 Clean before saving new
+    if not allowed_file(file.filename):
+        return jsonify({"error": "Unsupported file type"}), 400
+
+    clear_upload_folder()
 
     filename = secure_filename(file.filename)
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -65,7 +75,6 @@ def check_invoice_api():
 
     result_text, ela_image_path = full_invoice_check(filepath)
 
-    # Ensure paths are relative for client usage
     if filepath:
         filepath = filepath.replace("\\", "/")
     if ela_image_path:
