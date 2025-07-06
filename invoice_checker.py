@@ -26,38 +26,36 @@ def check_ocr_fields(image_path):
     text = pytesseract.image_to_string(thresh, config=custom_config)
     lower_text = text.lower()
 
-    # ✅ Expanded field variants for global invoice support
     field_variants = {
-    'invoice': [
-        'invoice', 'invoice number', 'invoice #', 'order number', 'order #',
-        'ref no.', 'reference number', 'bill number', 'sales invoice', 'purchase id',
-        'tr#', 'tc#', 'approval #', 'terminal #'
-    ],
-    'date': [
-        'date', 'invoice date', 'order date', 'delivery date', 'issue date',
-        'transaction date', 'billed on', 'created on', 'generated on',
-        '09/01/12', '14:16:00'  # auto-detects this pattern
-    ],
-    'total': [
-        'total', 'total amount', 'grand total', 'order total', 'invoice total',
-        'amount due', 'balance due', 'amount payable', 'total payable', 'final total',
-        'change due', 'debit tend'
-    ],
-    'tax': [
-        'tax', 'sales tax', 'vat', 'gst', 'igst', 'cgst', 'sgst',
-        'tax amount', 'vat amount', 'taxable', 'tax rate', 'tax 1'
-    ],
-    'subtotal': [
-        'subtotal', 'item subtotal', 'items total', 'unit price', 'product price',
-        'base amount', 'price before tax', 'amount (excl. tax)', 'amount (incl. tax)',
-        'items sold', '# items sold'
-    ],
-    'shipping': [
-        'shipping', 'shipping cost', 'shipping fee', 'shipping charges',
-        'delivery fee', 'logistics charge', 'freight charges', 'handling charges'
-    ]
+        'invoice': [
+            'invoice', 'invoice number', 'invoice #', 'order number', 'order #',
+            'ref no.', 'reference number', 'bill number', 'sales invoice', 'purchase id',
+            'tr#', 'tc#', 'approval #', 'terminal #'
+        ],
+        'date': [
+            'date', 'invoice date', 'order date', 'delivery date', 'issue date',
+            'transaction date', 'billed on', 'created on', 'generated on',
+            '09/01/12', '14:16:00'
+        ],
+        'total': [
+            'total', 'total amount', 'grand total', 'order total', 'invoice total',
+            'amount due', 'balance due', 'amount payable', 'total payable', 'final total',
+            'change due', 'debit tend'
+        ],
+        'tax': [
+            'tax', 'sales tax', 'vat', 'gst', 'igst', 'cgst', 'sgst',
+            'tax amount', 'vat amount', 'taxable', 'tax rate', 'tax 1'
+        ],
+        'subtotal': [
+            'subtotal', 'item subtotal', 'items total', 'unit price', 'product price',
+            'base amount', 'price before tax', 'amount (excl. tax)', 'amount (incl. tax)',
+            'items sold', '# items sold'
+        ],
+        'shipping': [
+            'shipping', 'shipping cost', 'shipping fee', 'shipping charges',
+            'delivery fee', 'logistics charge', 'freight charges', 'handling charges'
+        ]
     }
-
 
     matched_fields = []
     missing_fields = []
@@ -68,7 +66,6 @@ def check_ocr_fields(image_path):
         else:
             missing_fields.append(key)
 
-    # ✅ Passes if at least 4 of 6 fields are detected
     passed = len(matched_fields) >= 4
     return passed, text, missing_fields
 
@@ -94,7 +91,7 @@ def check_ela(image_path, quality=90):
 
     extrema = ela_image.getextrema()
     max_diff = max([e[1] for e in extrema])
-    
+
     print(f"[DEBUG] ELA max_diff: {max_diff}")
 
     if max_diff == 0:
@@ -104,7 +101,7 @@ def check_ela(image_path, quality=90):
     ela_image = ImageEnhance.Brightness(ela_image).enhance(scale)
     ela_image.save(ela_output)
 
-    suspicious = max_diff > 60  # Balanced for real-world invoices
+    suspicious = max_diff > 60
     passed = not suspicious
     return passed, ela_output
 
