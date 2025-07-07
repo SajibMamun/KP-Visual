@@ -33,13 +33,14 @@ Add this path to your Windows Environment Variables > PATH<br/>
 Step 4:<br/><br/>
 pip install requirements.txt <br/><br/>
 
-Flask<br/>
-Werkzeug<br/>
-pytesseract<br/>
-Pillow<br/>
-opencv-python<br/>
-numpy<br/>
-pdf2image<br/>
+fastapi </br>
+uvicorn </br>
+jinja2 </br>
+python-multipart </br>
+pdf2image </br>
+pytesseract </br>
+opencv-python </br>
+Pillow </br>
 
 <br/><br/><br/><br/>
 
