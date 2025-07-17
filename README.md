@@ -10,15 +10,19 @@ Download the latest .exe file (e.g., tesseract-ocr-w64-setup-v5.3.3.20231005.exe
 Install it to a known path (default is):<br/>
 C:\Program Files\Tesseract-OCR\ <br/><br/>
 
+✅ Step 2: Install  Microsoft Visual C++ <br/><br/>
+make sure you have installed microsoft visual C++ other wise proppler will not work.
+
+https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170 <br/><br/>
 
 
-✅ Step 2: Set Tesseract Path in Python <br/><br/>
+✅ Step 3: Set Tesseract Path in Python <br/><br/>
 Add this line in your Python script before calling pytesseract:<br/>
 import pytesseract<br/>
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'<br/><br/>
 
 
-🧱 Step 3: Install Poppler (PDF renderer used by pdf2image)<br/>
+🧱 Step 4: Install Poppler (PDF renderer used by pdf2image)<br/>
 🔗 Windows users:<br/><br/>
 Download from:<br/>
 https://github.com/oschwartz10612/poppler-windows/releases/<br/><br/>
@@ -30,7 +34,7 @@ Add this path to your Windows Environment Variables > PATH<br/>
 <br/><br/>
 
 
-Step 4:<br/><br/>
+Step 5:<br/><br/>
 pip install requirements.txt <br/><br/>
 
 Flask<br/>
@@ -42,6 +46,7 @@ numpy<br/>
 pdf2image<br/>
 
 <br/><br/><br/><br/>
+
 
 ![image](https://github.com/user-attachments/assets/13f2e70f-aeff-4e31-a4b6-4becf826248c)
 
